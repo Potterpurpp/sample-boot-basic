@@ -15,9 +15,15 @@ public class HelloControllerTest {
     @Test
     public void testHello() {
 
-        // Act
-        String response = controller.hello();
-        // Assert
-        assertEquals("Hello World!", response);
+            // Act
+            String response = controller.hello("Potter");
+            // Assert
+            assertEquals("Hello World!", response);
+            // Act
+    }
+    @Test
+    public void testSum(){
+        int response = controller.sum(8,9);
+        assertEquals(19 , response);
     }
 }
