@@ -2,6 +2,7 @@ package th.mfu;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Employee {
@@ -11,12 +12,18 @@ public class Employee {
     private String fname;
     @JsonProperty("last_name")
     private String lname;
-    
+
     private double salary;
     private String position;
+    
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date birthday;
     
 
+    public Employee(){
+        ///
+
+    }
 
     public Employee(long id, String fname, String lname, double salary, String position, Date birthday) {
         this.id = id;

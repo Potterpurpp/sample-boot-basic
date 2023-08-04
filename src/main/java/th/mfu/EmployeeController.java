@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,12 +52,50 @@ public class EmployeeController {
     }
    
 
-    //Update Employee
+    //Update All field in Employee
     @PutMapping("/employees/{id}")
     public ResponseEntity<String> updateEmployee (@PathVariable long id , @RequestBody Employee employee){
 
         employeesDB.put(id, employee);
         return ResponseEntity.ok(" Employee Has been updated");
+    }
+
+    //Update some field
+    @PatchMapping("/employees/{id}")
+    public ResponseEntity<String> patchEmployee(@PathVariable long id, @RequestBody HashMap<String, Object> filedupdate){
+        //Check exist
+        if(!employeesDB.containsKey(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee NOT FOUND!");
+        }
+
+        //Get employee from db
+        Employee emp = employeesDB.get(id);
+        //loop throught fields to update
+        filedupdate.forEach((key,value) ->{
+            if(key.equals("first_name")){
+                emp.setFname((String)value);
+            }
+           //check if field is lastname
+            if(key.equals("last_name")){
+                //update lastname
+               emp.setLname((String)value);
+            }
+
+            //check if field is salary
+            if(key.equals("salary")){
+                //update salary
+                emp.setSalary(Long.valueOf(""+value));
+            }
+
+        });
+
+        //update employee
+        employeesDB.put(id, emp);
+
+
+        //return success message
+        return ResponseEntity.ok("Employee updated");
+      
     }
 
     //Delete Employee
